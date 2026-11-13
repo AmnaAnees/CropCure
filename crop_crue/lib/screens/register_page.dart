@@ -188,6 +188,7 @@ class _RegisterPageState extends State<RegisterPage>
                             children: [
                               // Logo (elastic pop-in)
                               // Logo (elastic pop-in)
+
                               ScaleTransition(
                                 scale: CurvedAnimation(
                                   parent: _introCtrl,
@@ -198,28 +199,32 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
                                 ),
                                 child: Container(
-                                  width: 96,
-                                  height: 96,
-                                  padding: const EdgeInsets.all(6),
+                                  width: 120,
+                                  height: 120,
+                                  padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
                                     color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withValues(alpha: 0.25),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.25,
+                                        ),
                                         blurRadius: 16,
                                         offset: const Offset(0, 6),
                                       ),
                                     ],
                                   ),
-                                  child: ClipOval(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
                                     child: Image.asset(
-                                      'assets/images/app_logo.png',
-                                      fit: BoxFit.cover,
+                                      'assets/images/app_logo.jpeg',
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
                               ),
+
                               const SizedBox(height: 16),
 
                               _stagger(
