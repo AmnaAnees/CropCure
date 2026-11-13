@@ -1,0 +1,17 @@
+{
+  "@@locale": "ur",
+  "registerTitle": "اکاؤنٹ بنائیں",
+  "registerSubtitle": "اپنی گندم کی فصل کی حفاظت شروع کریں",
+  "fullName": "پورا نام",
+  "email": "ای میل",
+  "password": "پاس ورڈ",
+  "confirmPassword": "پاس ورڈ کی تصدیق کریں",
+  "registerButton": "رجسٹر کریں",
+  "alreadyHaveAccount": "پہلے سے اکاؤنٹ ہے؟",
+  "login": "لاگ ان",
+  "errRequired": "یہ خانہ ضروری ہے",
+  "errInvalidEmail": "درست ای میل درج کریں",
+  "errPasswordShort": "پاس ورڈ کم از کم 6 حروف کا ہونا چاہیے",
+  "errPasswordMismatch": "پاس ورڈ مماثل نہیں ہیں",
+  "registerSuccess": "اکاؤنٹ کامیابی سے بن گیا!"
+}

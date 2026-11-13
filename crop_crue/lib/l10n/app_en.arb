@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "registerTitle": "Create Account",
+  "registerSubtitle": "Start protecting your wheat crop",
+  "fullName": "Full Name",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "registerButton": "Register",
+  "alreadyHaveAccount": "Already have an account?",
+  "login": "Login",
+  "errRequired": "This field is required",
+  "errInvalidEmail": "Enter a valid email",
+  "errPasswordShort": "Password must be at least 6 characters",
+  "errPasswordMismatch": "Passwords do not match",
+  "registerSuccess": "Account created successfully!"
+}
