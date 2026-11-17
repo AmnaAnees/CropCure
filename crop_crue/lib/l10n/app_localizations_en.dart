@@ -10,6 +10,30 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get loginTitle => 'Welcome Back';
+
+  @override
+  String get loginSubtitle => 'Sign in to continue protecting your wheat crop';
+
+  @override
+  String get forgotPassword => 'Forgot Password?';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get showPassword => 'Show password';
+
+  @override
+  String get hidePassword => 'Hide password';
+
+  @override
+  String get loginNotConfigured => 'Sign-in is not connected yet.';
+
+  @override
+  String get resetNotConfigured => 'Password reset is not available yet.';
+
+  @override
   String get registerTitle => 'Create Account';
 
   @override
