@@ -10,6 +10,32 @@ class AppLocalizationsUr extends AppLocalizations {
   AppLocalizationsUr([String locale = 'ur']) : super(locale);
 
   @override
+  String get loginTitle => 'واپس خوش آمدید';
+
+  @override
+  String get loginSubtitle =>
+      'اپنی گندم کی فصل کی حفاظت جاری رکھنے کے لیے لاگ ان کریں';
+
+  @override
+  String get forgotPassword => 'پاس ورڈ بھول گئے؟';
+
+  @override
+  String get dontHaveAccount => 'اکاؤنٹ نہیں ہے؟';
+
+  @override
+  String get showPassword => 'پاس ورڈ دکھائیں';
+
+  @override
+  String get hidePassword => 'پاس ورڈ چھپائیں';
+
+  @override
+  String get loginNotConfigured => 'لاگ ان کی سہولت ابھی منسلک نہیں ہے۔';
+
+  @override
+  String get resetNotConfigured =>
+      'پاس ورڈ دوبارہ ترتیب دینے کی سہولت ابھی دستیاب نہیں ہے۔';
+
+  @override
   String get registerTitle => 'اکاؤنٹ بنائیں';
 
   @override

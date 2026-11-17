@@ -1,5 +1,13 @@
 {
   "@@locale": "en",
+  "loginTitle": "Welcome Back",
+  "loginSubtitle": "Sign in to continue protecting your wheat crop",
+  "forgotPassword": "Forgot Password?",
+  "dontHaveAccount": "Don't have an account?",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "loginNotConfigured": "Sign-in is not connected yet.",
+  "resetNotConfigured": "Password reset is not available yet.",
   "registerTitle": "Create Account",
   "registerSubtitle": "Start protecting your wheat crop",
   "fullName": "Full Name",

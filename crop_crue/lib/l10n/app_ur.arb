@@ -1,5 +1,13 @@
 {
   "@@locale": "ur",
+  "loginTitle": "واپس خوش آمدید",
+  "loginSubtitle": "اپنی گندم کی فصل کی حفاظت جاری رکھنے کے لیے لاگ ان کریں",
+  "forgotPassword": "پاس ورڈ بھول گئے؟",
+  "dontHaveAccount": "اکاؤنٹ نہیں ہے؟",
+  "showPassword": "پاس ورڈ دکھائیں",
+  "hidePassword": "پاس ورڈ چھپائیں",
+  "loginNotConfigured": "لاگ ان کی سہولت ابھی منسلک نہیں ہے۔",
+  "resetNotConfigured": "پاس ورڈ دوبارہ ترتیب دینے کی سہولت ابھی دستیاب نہیں ہے۔",
   "registerTitle": "اکاؤنٹ بنائیں",
   "registerSubtitle": "اپنی گندم کی فصل کی حفاظت شروع کریں",
   "fullName": "پورا نام",
