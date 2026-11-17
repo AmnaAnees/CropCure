@@ -19,6 +19,10 @@ class MyApp extends StatelessWidget {
       supportedLocales:
           AppLocalizations.supportedLocales,
       home: const SplashScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+
+      home: const RegisterPage(),
     );
   }
 }
