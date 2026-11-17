@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:crop_crue/l10n/app_localizations.dart';
+import 'package:crop_crue/screens/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -438,10 +439,13 @@ class _RegisterPageState extends State<RegisterPage>
                                     ),
                                     TextButton(
                                       onPressed: () {
-                                        if (Navigator.canPop(context)) {
-                                          Navigator.pop(context);
-                                        }
-                                        // TODO: or pushReplacement(LoginPage)
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginPage(),
+                                          ),
+                                        );
                                       },
                                       child: Text(
                                         t.login,

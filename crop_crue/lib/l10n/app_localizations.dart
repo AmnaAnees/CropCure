@@ -98,6 +98,54 @@ abstract class AppLocalizations {
     Locale('ur'),
   ];
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get loginTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to continue protecting your wheat crop'**
+  String get loginSubtitle;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPassword;
+
+  /// No description provided for @dontHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAccount;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePassword;
+
+  /// No description provided for @loginNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in is not connected yet.'**
+  String get loginNotConfigured;
+
+  /// No description provided for @resetNotConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset is not available yet.'**
+  String get resetNotConfigured;
+
   /// No description provided for @registerTitle.
   ///
   /// In en, this message translates to:
