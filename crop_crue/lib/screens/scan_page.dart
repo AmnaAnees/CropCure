@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'result_page.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
@@ -7,24 +8,29 @@ class ScanPage extends StatefulWidget {
   State<ScanPage> createState() => _ScanPageState();
 }
 
-class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin {
+class _ScanPageState extends State<ScanPage>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
+
   late AnimationController _animationController;
   late Animation<double> _animation;
 
-  // App colors aligned with your login theme
   static const Color darkGreen = Color(0xFF006B3C);
   static const Color cardGreenTint = Color(0xFF132E1F);
 
   @override
   void initState() {
     super.initState();
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-    
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Curves.easeInOut,
@@ -38,22 +44,42 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: darkGreen,
-        behavior: SnackBarBehavior.floating,
+  // Open ScanResultPage with ScanResultData
+  void _openResultPage({required String source}) {
+    // Temporary sample data until ML/backend integration is connected
+    final ScanResultData sampleResult = source == 'camera'
+        ? const ScanResultData(
+            diseaseName: 'Leaf Rust',
+            confidence: 0.92,
+            pathogenType: 'Fungus (Puccinia triticina)',
+            mainSymptom: 'Small, round-to-oval orange-brown pustules scattered on leaves.',
+            leafAssetFallback: 'assets/images/bg.jpg',
+          )
+        : const ScanResultData(
+            diseaseName: 'Stripe Rust',
+            confidence: 0.88,
+            pathogenType: 'Fungus (Puccinia striiformis)',
+            mainSymptom: 'Yellow-orange uredinial pustules arranged in narrow stripes along veins.',
+            leafAssetFallback: 'assets/images/bg.jpg',
+          );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScanResultPage(result: sampleResult),
       ),
     );
   }
 
+  // Bottom navigation
   void _openPage(int index) {
     setState(() {
       _selectedIndex = index;
     });
 
-    if (index == 0) return;
+    if (index == 0) {
+      return;
+    }
 
     final pages = [
       const SizedBox(),
@@ -82,12 +108,15 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
       body: Container(
         width: double.infinity,
         height: double.infinity,
+
+        // Background image (make sure assets/images/bg.jpg is in pubspec.yaml)
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/bg.jpg'),
             fit: BoxFit.cover,
           ),
         ),
+
         child: SafeArea(
           bottom: false,
           child: LayoutBuilder(
@@ -96,7 +125,9 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
 
               return Center(
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 500),
+                  constraints: const BoxConstraints(
+                    maxWidth: 500,
+                  ),
                   child: SingleChildScrollView(
                     padding: EdgeInsets.symmetric(
                       horizontal: screenWidth < 360 ? 14 : 20,
@@ -105,19 +136,20 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Heading Card (Frosted Dark Theme matching login screen)
+                        // Heading Card
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF142C1E).withOpacity(0.85),
+                            color: const Color(0xFF142C1E)
+                                .withValues(alpha: 0.85),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.15),
+                              color: Colors.white.withValues(alpha: 0.15),
                               width: 1.5,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withValues(alpha: 0.3),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -148,97 +180,94 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
 
                         const SizedBox(height: 18),
 
-                        // Scanning preview area
+                        // Scanning Preview
                         Container(
                           width: double.infinity,
                           height: 250,
                           decoration: BoxDecoration(
-                            color: cardGreenTint.withOpacity(0.88),
+                            color: cardGreenTint.withValues(alpha: 0.88),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Colors.white.withOpacity(0.15),
+                              color: Colors.white.withValues(alpha: 0.15),
                               width: 1.5,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withValues(alpha: 0.3),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
                             ],
                           ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Dashed scanning frame
-                              Container(
-                                width: 160,
-                                height: 160,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: CustomPaint(
-                                  painter: DashedBorderPainter(
-                                    color: const Color(0xFF4CD99C),
-                                  ),
-                                  child: const Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Text(
-                                        'Place one leaf inside the frame',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: Color(0xFFB0C4B8),
-                                          fontWeight: FontWeight.w500,
+                          child: Center(
+                            child: SizedBox(
+                              width: 160,
+                              height: 160,
+                              child: Stack(
+                                children: [
+                                  // Dashed scanning frame
+                                  Positioned.fill(
+                                    child: CustomPaint(
+                                      painter: DashedBorderPainter(
+                                        color: const Color(0xFF4CD99C),
+                                      ),
+                                      child: const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Text(
+                                            'Place one leaf inside the frame',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: Color(0xFFB0C4B8),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
 
-                              // Animated Scanning Line moving up and down
-                              AnimatedBuilder(
-                                animation: _animation,
-                                builder: (context, child) {
-                                  return Positioned(
-                                    top: 45 + (_animation.value * 110),
-                                    left: 45,
-                                    right: 45,
-                                    child: child!,
-                                  );
-                                },
-                                child: Container(
-                                  height: 2,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF4CD99C),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: const Color(0xFF4CD99C).withOpacity(0.8),
-                                        blurRadius: 8,
-                                        spreadRadius: 1,
+                                  // Animated scanning line locked inside 160x160 box
+                                  AnimatedBuilder(
+                                    animation: _animation,
+                                    builder: (context, child) {
+                                      return Positioned(
+                                        top: 8 + (_animation.value * 140),
+                                        left: 8,
+                                        right: 8,
+                                        child: child!,
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 2,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFF4CD99C),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0xFF4CD99C)
+                                                .withValues(alpha: 0.8),
+                                            blurRadius: 8,
+                                            spreadRadius: 1,
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
 
                         const SizedBox(height: 16),
 
-                        // Take photo button
+                        // Take Photo Button
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton.icon(
-                            onPressed: () {
-                              _showMessage(
-                                'Camera feature will be added later.',
-                              );
-                            },
+                            onPressed: () => _openResultPage(source: 'camera'),
                             icon: const Icon(
                               Icons.camera_alt_outlined,
                               size: 20,
@@ -263,16 +292,12 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
 
                         const SizedBox(height: 14),
 
-                        // Gallery button
+                        // Gallery Button
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                              _showMessage(
-                                'Gallery feature will be added later.',
-                              );
-                            },
+                            onPressed: () => _openResultPage(source: 'gallery'),
                             icon: const Icon(
                               Icons.photo_library_outlined,
                               size: 20,
@@ -285,7 +310,8 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
                               ),
                             ),
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: const Color(0xFF142C1E).withOpacity(0.9),
+                              backgroundColor: const Color(0xFF142C1E)
+                                  .withValues(alpha: 0.9),
                               foregroundColor: Colors.white,
                               side: const BorderSide(
                                 color: Color(0xFF4CD99C),
@@ -299,19 +325,21 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
 
                         const SizedBox(height: 18),
 
-                        // Tip card
+                        // Tip Card
                         Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF2A2415).withOpacity(0.9),
+                            color: const Color(0xFF2A2415)
+                                .withValues(alpha: 0.9),
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
-                              color: const Color(0xFFEAD69B).withOpacity(0.5),
+                              color: const Color(0xFFEAD69B)
+                                  .withValues(alpha: 0.5),
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
+                                color: Colors.black.withValues(alpha: 0.2),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -358,7 +386,7 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
           color: const Color(0xFF142C1E),
           border: Border(
             top: BorderSide(
-              color: Colors.white.withOpacity(0.1),
+              color: Colors.white.withValues(alpha: 0.1),
             ),
           ),
         ),
@@ -404,7 +432,9 @@ class _ScanPageState extends State<ScanPage> with SingleTickerProviderStateMixin
 class DashedBorderPainter extends CustomPainter {
   final Color color;
 
-  DashedBorderPainter({required this.color});
+  DashedBorderPainter({
+    required this.color,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -414,7 +444,12 @@ class DashedBorderPainter extends CustomPainter {
       ..strokeWidth = 2;
 
     final rect = RRect.fromRectAndRadius(
-      Rect.fromLTWH(1, 1, size.width - 2, size.height - 2),
+      Rect.fromLTWH(
+        1,
+        1,
+        size.width - 2,
+        size.height - 2,
+      ),
       const Radius.circular(14),
     );
 
@@ -442,7 +477,7 @@ class DashedBorderPainter extends CustomPainter {
   }
 }
 
-// Temporary pages for navigation
+// Temporary pages
 class PlaceholderPage extends StatelessWidget {
   final String title;
 
