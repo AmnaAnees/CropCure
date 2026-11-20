@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:crop_crue/l10n/app_localizations.dart';
 import 'package:crop_crue/screens/register_page.dart';
 import 'package:flutter/material.dart';
+import 'scan_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -109,9 +110,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   void _submit(AppLocalizations t) {
-    if (!_formKey.currentState!.validate()) return;
-    _showMessage(t.loginNotConfigured);
-  }
+  if (!_formKey.currentState!.validate()) return;
+
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => const ScanPage(),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
