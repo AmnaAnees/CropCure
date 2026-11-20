@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'cure_page.dart';
 
 // Model class: Baad mein backend/ML model ka real data yahan aayega
 class ScanResultData {
@@ -323,10 +324,10 @@ class ScanResultPage extends StatelessWidget {
                       height: 48,
                       child: ElevatedButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Cure and prevention page will be added later.'),
-                              behavior: SnackBarBehavior.floating,
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CurePreventionPage(),
                             ),
                           );
                         },
