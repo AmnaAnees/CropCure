@@ -1,10 +1,12 @@
+
 import 'package:flutter/material.dart';
-
 import 'l10n/app_localizations.dart';
+import 'screens/splash_screen.dart';
 
-import 'screens/register_page.dart';
+void main() {
+  runApp(const MyApp());
+}
 
-void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,8 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-
-      home: const RegisterPage(),
+      home: const SplashScreen(),
     );
   }
 }
