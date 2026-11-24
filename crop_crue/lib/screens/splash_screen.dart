@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
       _scanController.repeat(reverse: true);
     });
 
-    // 5. Navigate to RegisterPage after a total of 5 seconds
+    // 5. Navigate to LoginPage after a total of 5 seconds
     _timer = Timer(const Duration(seconds: 5), () {
       if (!mounted) return;
 
@@ -105,10 +105,9 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // 1. Base Background Image (fully rendered)
-          Image.asset(
-            'assets/images/wheat_background.jpg',
-            fit: BoxFit.cover,
+          // 1. Dark Green Background Base
+          Container(
+            color: const Color(0xFF0D2818),
           ),
 
           // 2. Animated Pulsing Overlay Circles (animate first)
@@ -122,7 +121,7 @@ class _SplashScreenState extends State<SplashScreen>
             },
           ),
 
-          // 3. Very light gradient overlay so the background image remains vibrant underneath
+          // 3. Very light gradient overlay so the background remains vibrant underneath
           DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -226,23 +225,23 @@ class _PulsingCirclesPainter extends CustomPainter {
 
     final center = Offset(size.width / 2, size.height / 2);
     final baseRadius = size.shortestSide * 0.35;
-    
+
     // Centers corresponding to top, bottom, left, right watermark positions
     final offsets = [
-      Offset(center.dx, 0.0),                    // Top circle
-      Offset(center.dx, size.height),            // Bottom circle
-      Offset(0.0, center.dy),                    // Left circle
-      Offset(size.width, center.dy),             // Right circle
+      Offset(center.dx, 0.0), // Top circle
+      Offset(center.dx, size.height), // Bottom circle
+      Offset(0.0, center.dy), // Left circle
+      Offset(size.width, center.dy), // Right circle
     ];
 
     for (int i = 0; i < offsets.length; i++) {
       final pos = offsets[i];
-      for (int ring = 1; ring <= 3; ring++) {
+      for (int ring = 1; ring <= 2; ring++) {
         final radius = (baseRadius * 0.4 * ring) + (animationValue * 18.0 * ring);
         final opacity = (0.60 - (ring * 0.12)) * (0.85 + (animationValue * 0.15));
-        
-        // Changed from Colors.blue.shade400 to a vibrant green theme
-        paint.color = Colors.green.shade400.withOpacity(opacity.clamp(0.0, 1.0));
+
+        // Wheat golden color
+        paint.color = const Color(0xFFE5B84B).withOpacity(opacity.clamp(0.0, 1.0));
         canvas.drawCircle(pos, radius, paint);
       }
     }

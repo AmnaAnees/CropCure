@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'result_page.dart';
+import 'package:crop_crue/screens/result_page.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
@@ -15,8 +15,15 @@ class _ScanPageState extends State<ScanPage>
   late AnimationController _animationController;
   late Animation<double> _animation;
 
-  static const Color darkGreen = Color(0xFF006B3C);
-  static const Color cardGreenTint = Color(0xFF132E1F);
+  // Color palette matched to CropCure dark forest green & wheat golden buttons
+  static const Color canvasDarkGreen = Color(0xFF061B0D);
+  static const Color cardDarkGreen = Color(0xFF14311E);
+  static const Color cardBorderGreen = Color(0xFF284F36);
+  static const Color wheatGold = Color(0xFFE5B84B);
+  static const Color wheatGoldText = Color(0xFF142419);
+  static const Color accentMint = Color(0xFF7AE582);
+  static const Color bottomNavLight = Color(0xFFF3F6F4);
+  static const Color bottomNavActivePill = Color(0xFFDDECE2);
 
   @override
   void initState() {
@@ -105,18 +112,11 @@ class _ScanPageState extends State<ScanPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: canvasDarkGreen,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-
-        // Background image (make sure assets/images/bg.jpg is in pubspec.yaml)
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-
+        color: canvasDarkGreen,
         child: SafeArea(
           bottom: false,
           child: LayoutBuilder(
@@ -140,16 +140,15 @@ class _ScanPageState extends State<ScanPage>
                         Container(
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF142C1E)
-                                .withValues(alpha: 0.85),
+                            color: cardDarkGreen,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.15),
-                              width: 1.5,
+                              color: cardBorderGreen,
+                              width: 1.4,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
+                                color: Colors.black.withValues(alpha: 0.35),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -171,7 +170,7 @@ class _ScanPageState extends State<ScanPage>
                                 'Take a clear photo to check for disease.',
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: Color(0xFFB0C4B8),
+                                  color: Color(0xFFB8CEBE),
                                 ),
                               ),
                             ],
@@ -185,15 +184,15 @@ class _ScanPageState extends State<ScanPage>
                           width: double.infinity,
                           height: 250,
                           decoration: BoxDecoration(
-                            color: cardGreenTint.withValues(alpha: 0.88),
+                            color: cardDarkGreen,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.15),
-                              width: 1.5,
+                              color: cardBorderGreen,
+                              width: 1.4,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
+                                color: Colors.black.withValues(alpha: 0.35),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -209,7 +208,7 @@ class _ScanPageState extends State<ScanPage>
                                   Positioned.fill(
                                     child: CustomPaint(
                                       painter: DashedBorderPainter(
-                                        color: const Color(0xFF4CD99C),
+                                        color: accentMint,
                                       ),
                                       child: const Center(
                                         child: Padding(
@@ -219,7 +218,7 @@ class _ScanPageState extends State<ScanPage>
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 11,
-                                              color: Color(0xFFB0C4B8),
+                                              color: Color(0xFFD5E6DA),
                                               fontWeight: FontWeight.w500,
                                             ),
                                           ),
@@ -242,10 +241,10 @@ class _ScanPageState extends State<ScanPage>
                                     child: Container(
                                       height: 2,
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFF4CD99C),
+                                        color: accentMint,
                                         boxShadow: [
                                           BoxShadow(
-                                            color: const Color(0xFF4CD99C)
+                                            color: accentMint
                                                 .withValues(alpha: 0.8),
                                             blurRadius: 8,
                                             spreadRadius: 1,
@@ -262,7 +261,7 @@ class _ScanPageState extends State<ScanPage>
 
                         const SizedBox(height: 16),
 
-                        // Take Photo Button
+                        // Take Photo Button (Wheat Golden)
                         SizedBox(
                           width: double.infinity,
                           height: 50,
@@ -280,8 +279,8 @@ class _ScanPageState extends State<ScanPage>
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: darkGreen,
-                              foregroundColor: Colors.white,
+                              backgroundColor: wheatGold,
+                              foregroundColor: wheatGoldText,
                               elevation: 2,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(13),
@@ -292,11 +291,11 @@ class _ScanPageState extends State<ScanPage>
 
                         const SizedBox(height: 14),
 
-                        // Gallery Button
+                        // Gallery Button (Wheat Golden)
                         SizedBox(
                           width: double.infinity,
                           height: 50,
-                          child: OutlinedButton.icon(
+                          child: ElevatedButton.icon(
                             onPressed: () => _openResultPage(source: 'gallery'),
                             icon: const Icon(
                               Icons.photo_library_outlined,
@@ -306,16 +305,13 @@ class _ScanPageState extends State<ScanPage>
                               'Choose from gallery',
                               style: TextStyle(
                                 fontSize: 14,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            style: OutlinedButton.styleFrom(
-                              backgroundColor: const Color(0xFF142C1E)
-                                  .withValues(alpha: 0.9),
-                              foregroundColor: Colors.white,
-                              side: const BorderSide(
-                                color: Color(0xFF4CD99C),
-                              ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: wheatGold,
+                              foregroundColor: wheatGoldText,
+                              elevation: 2,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(13),
                               ),
@@ -330,38 +326,44 @@ class _ScanPageState extends State<ScanPage>
                           width: double.infinity,
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF2A2415)
-                                .withValues(alpha: 0.9),
+                            color: cardDarkGreen,
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(
-                              color: const Color(0xFFEAD69B)
-                                  .withValues(alpha: 0.5),
+                              color: cardBorderGreen,
+                              width: 1.4,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.2),
+                                color: Colors.black.withValues(alpha: 0.28),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
                             ],
                           ),
-                          child: const Row(
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.lightbulb_outline,
-                                color: Color(0xFFFFD56B),
-                                size: 20,
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1F472D),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.lightbulb_outline,
+                                  color: accentMint,
+                                  size: 20,
+                                ),
                               ),
-                              SizedBox(width: 9),
-                              Expanded(
+                              const SizedBox(width: 11),
+                              const Expanded(
                                 child: Text(
                                   'Tip: Use daylight and a plain background. '
                                   'Blurry or dark photos can lower accuracy.',
                                   style: TextStyle(
                                     fontSize: 12,
                                     height: 1.5,
-                                    color: Color(0xFFF3EAD3),
+                                    color: Color(0xFFD5E6DA),
                                   ),
                                 ),
                               ),
@@ -383,10 +385,10 @@ class _ScanPageState extends State<ScanPage>
       // Bottom Navigation
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF142C1E),
+          color: bottomNavLight,
           border: Border(
             top: BorderSide(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: Colors.black.withValues(alpha: 0.08),
             ),
           ),
         ),
@@ -397,32 +399,64 @@ class _ScanPageState extends State<ScanPage>
             onTap: _openPage,
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.transparent,
-            selectedItemColor: const Color(0xFF4CD99C),
-            unselectedItemColor: const Color(0xFF8FA899),
+            selectedItemColor: canvasDarkGreen,
+            unselectedItemColor: const Color(0xFF4A5D50),
             selectedFontSize: 11,
             unselectedFontSize: 10,
             elevation: 0,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.document_scanner_outlined),
-                activeIcon: Icon(Icons.document_scanner),
+                icon: _buildNavIcon(
+                  icon: Icons.document_scanner_outlined,
+                  isSelected: _selectedIndex == 0,
+                ),
+                activeIcon: _buildNavIcon(
+                  icon: Icons.document_scanner,
+                  isSelected: true,
+                ),
                 label: 'Scan',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.book_outlined),
+                icon: _buildNavIcon(
+                  icon: Icons.book_outlined,
+                  isSelected: _selectedIndex == 1,
+                ),
                 label: 'Library',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.access_time_outlined),
+                icon: _buildNavIcon(
+                  icon: Icons.access_time_outlined,
+                  isSelected: _selectedIndex == 2,
+                ),
                 label: 'History',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_outline),
+                icon: _buildNavIcon(
+                  icon: Icons.person_outline,
+                  isSelected: _selectedIndex == 3,
+                ),
                 label: 'Profile',
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildNavIcon({
+    required IconData icon,
+    required bool isSelected,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      decoration: BoxDecoration(
+        color: isSelected ? bottomNavActivePill : Colors.transparent,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Icon(
+        icon,
+        color: isSelected ? canvasDarkGreen : const Color(0xFF4A5D50),
       ),
     );
   }
@@ -489,10 +523,10 @@ class PlaceholderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0A1C12),
+      backgroundColor: const Color(0xFF061B0D),
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: const Color(0xFF142C1E),
+        backgroundColor: const Color(0xFF14311E),
         foregroundColor: Colors.white,
       ),
       body: Center(
@@ -501,7 +535,7 @@ class PlaceholderPage extends StatelessWidget {
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 17,
-            color: Color(0xFF4CD99C),
+            color: Color(0xFF7AE582),
             fontWeight: FontWeight.w600,
           ),
         ),

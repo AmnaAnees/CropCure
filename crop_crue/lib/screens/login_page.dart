@@ -1,9 +1,9 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:crop_crue/l10n/app_localizations.dart';
 import 'package:crop_crue/screens/register_page.dart';
+import 'package:crop_crue/screens/scan_page.dart';
 import 'package:flutter/material.dart';
-import 'scan_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,8 +29,9 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       vsync: this,
       duration: const Duration(seconds: 18),
     )..repeat(reverse: true);
+
     _bgScale = Tween<double>(
-      begin: 1,
+      begin: 1.0,
       end: 1.15,
     ).animate(CurvedAnimation(parent: _bgCtrl, curve: Curves.easeInOut));
 
@@ -110,15 +111,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   void _submit(AppLocalizations t) {
-  if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) return;
+    if (!mounted) return;
 
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const ScanPage(),
-    ),
-  );
-}
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) => const ScanPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,12 +132,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         children: [
           AnimatedBuilder(
             animation: _bgScale,
-            builder: (_, _) => Transform.scale(
+            builder: (context, child) => Transform.scale(
               scale: _bgScale.value,
-              child: Image.asset(
-                'assets/images/wheat_field.png',
-                fit: BoxFit.cover,
-              ),
+              child: child,
+            ),
+            child: Image.asset(
+              'assets/images/wheat_field.png',
+              fit: BoxFit.cover,
             ),
           ),
           Container(
@@ -159,7 +162,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(28),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                      filter: ui.ImageFilter.blur(sigmaX: 14, sigmaY: 14),
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
                         decoration: BoxDecoration(
@@ -285,8 +288,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   ),
                                   validator: (value) =>
                                       value == null || value.isEmpty
-                                      ? t.errRequired
-                                      : null,
+                                          ? t.errRequired
+                                          : null,
                                 ),
                               ),
                               Align(
