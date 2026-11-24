@@ -1,9 +1,10 @@
-import 'dart:ui' as ui;
+
+import 'dart:ui';
 
 import 'package:crop_crue/l10n/app_localizations.dart';
 import 'package:crop_crue/screens/register_page.dart';
-import 'package:crop_crue/screens/scan_page.dart';
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,28 +13,43 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
 
   bool _obscurePassword = true;
+
   late final AnimationController _bgCtrl;
   late final Animation<double> _bgScale;
   late final AnimationController _introCtrl;
 
+  // Nature & Wheat Theme
+  static const Color _forestGreen = Color(0xFF174D35);
+  static const Color _softSage = Color(0xFFE5F0E5);
+  static const Color _warmCream = Color(0xFFF7F6ED);
+  static const Color _wheatGold = Color(0xFFD5AE55);
+  static const Color _deepGreen = Color(0xFF293B30);
+
   @override
   void initState() {
     super.initState();
+
     _bgCtrl = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 18),
     )..repeat(reverse: true);
 
     _bgScale = Tween<double>(
-      begin: 1.0,
+      begin: 1,
       end: 1.15,
-    ).animate(CurvedAnimation(parent: _bgCtrl, curve: Curves.easeInOut));
+    ).animate(
+      CurvedAnimation(
+        parent: _bgCtrl,
+        curve: Curves.easeInOut,
+      ),
+    );
 
     _introCtrl = AnimationController(
       vsync: this,
@@ -57,8 +73,13 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }) {
     final animation = CurvedAnimation(
       parent: _introCtrl,
-      curve: Interval(start, end, curve: Curves.easeOutCubic),
+      curve: Interval(
+        start,
+        end,
+        curve: Curves.easeOutCubic,
+      ),
     );
+
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
@@ -76,25 +97,41 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     required IconData icon,
     Widget? suffix,
   }) {
-    OutlineInputBorder border(Color color, [double width = 1]) =>
-        OutlineInputBorder(
-          borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: color, width: width),
-        );
+    OutlineInputBorder border(Color color, [double width = 1]) {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: color,
+          width: width,
+        ),
+      );
+    }
 
     return InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(color: Colors.white70),
-      floatingLabelStyle: const TextStyle(color: Colors.white),
-      prefixIcon: Icon(icon, color: Colors.white70),
+      labelStyle: const TextStyle(
+        color: Colors.white70,
+      ),
+      floatingLabelStyle: const TextStyle(
+        color: _wheatGold,
+      ),
+      prefixIcon: Icon(
+        icon,
+        color: _softSage,
+      ),
       suffixIcon: suffix,
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.12),
-      errorStyle: const TextStyle(color: Color(0xFFFFCDD2)),
+      errorStyle: const TextStyle(
+        color: Color(0xFFFFCDD2),
+      ),
       enabledBorder: border(Colors.white30),
-      focusedBorder: border(Colors.white, 1.6),
+      focusedBorder: border(_wheatGold, 1.6),
       errorBorder: border(const Color(0xFFFFCDD2)),
-      focusedErrorBorder: border(const Color(0xFFFFCDD2), 1.6),
+      focusedErrorBorder: border(
+        const Color(0xFFFFCDD2),
+        1.6,
+      ),
     );
   }
 
@@ -104,7 +141,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       ..showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: const Color(0xFF2E7D32),
+          backgroundColor: _forestGreen,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -112,12 +149,11 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   void _submit(AppLocalizations t) {
     if (!_formKey.currentState!.validate()) return;
-    if (!mounted) return;
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute<void>(
-        builder: (context) => const ScanPage(),
+      MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
       ),
     );
   }
@@ -130,51 +166,69 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // Animated background
           AnimatedBuilder(
             animation: _bgScale,
-            builder: (context, child) => Transform.scale(
+            builder: (_, _) => Transform.scale(
               scale: _bgScale.value,
-              child: child,
-            ),
-            child: Image.asset(
-              'assets/images/wheat_field.png',
-              fit: BoxFit.cover,
+              child: Image.asset(
+                'assets/images/wheat_field.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
+
+          // Forest green overlay
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withValues(alpha: 0.25),
-                  Colors.black.withValues(alpha: 0.65),
+                  _forestGreen.withValues(alpha: 0.38),
+                  _deepGreen.withValues(alpha: 0.82),
                 ],
               ),
             ),
           ),
+
+          // Login content
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 420),
+                  constraints: const BoxConstraints(
+                    maxWidth: 420,
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(28),
                     child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                      filter: ImageFilter.blur(
+                        sigmaX: 14,
+                        sigmaY: 14,
+                      ),
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                        padding: const EdgeInsets.fromLTRB(
+                          24,
+                          28,
+                          24,
+                          24,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.14),
+                          color: _forestGreen.withValues(alpha: 0.48),
                           borderRadius: BorderRadius.circular(28),
-                          border: Border.all(color: Colors.white30),
+                          border: Border.all(
+                            color: _wheatGold.withValues(alpha: 0.55),
+                            width: 1.2,
+                          ),
                         ),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              // Logo
                               _stagger(
                                 start: 0,
                                 end: 0.45,
@@ -183,8 +237,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   height: 112,
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: _warmCream,
                                     borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: _wheatGold,
+                                      width: 2,
+                                    ),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withValues(
@@ -204,7 +262,10 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
+
                               const SizedBox(height: 20),
+
+                              // Title and subtitle
                               _stagger(
                                 start: 0.1,
                                 end: 0.5,
@@ -214,7 +275,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                       t.loginTitle,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: _warmCream,
                                         fontSize: 26,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -224,48 +285,67 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                       t.loginSubtitle,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        color: Colors.white70,
+                                        color: _softSage,
                                         fontSize: 14,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+
                               const SizedBox(height: 28),
+
+                              // Email field
                               _stagger(
                                 start: 0.2,
                                 end: 0.65,
                                 child: TextFormField(
                                   controller: _emailCtrl,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.next,
-                                  autofillHints: const [AutofillHints.email],
+                                  autofillHints: const [
+                                    AutofillHints.email,
+                                  ],
                                   decoration: _decoration(
                                     label: t.email,
                                     icon: Icons.email_outlined,
                                   ),
                                   validator: (value) {
-                                    if (value == null || value.trim().isEmpty) {
+                                    if (value == null ||
+                                        value.trim().isEmpty) {
                                       return t.errRequired;
                                     }
+
                                     final valid = RegExp(
                                       r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
                                     ).hasMatch(value.trim());
-                                    return valid ? null : t.errInvalidEmail;
+
+                                    return valid
+                                        ? null
+                                        : t.errInvalidEmail;
                                   },
                                 ),
                               ),
+
                               const SizedBox(height: 16),
+
+                              // Password field
                               _stagger(
                                 start: 0.3,
                                 end: 0.75,
                                 child: TextFormField(
                                   controller: _passwordCtrl,
                                   obscureText: _obscurePassword,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   textInputAction: TextInputAction.done,
-                                  autofillHints: const [AutofillHints.password],
+                                  autofillHints: const [
+                                    AutofillHints.password,
+                                  ],
                                   onFieldSubmitted: (_) => _submit(t),
                                   decoration: _decoration(
                                     label: t.password,
@@ -278,12 +358,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                         _obscurePassword
                                             ? Icons.visibility_off_outlined
                                             : Icons.visibility_outlined,
-                                        color: Colors.white70,
+                                        color: _wheatGold,
                                       ),
-                                      onPressed: () => setState(
-                                        () => _obscurePassword =
-                                            !_obscurePassword,
-                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _obscurePassword =
+                                              !_obscurePassword;
+                                        });
+                                      },
                                     ),
                                   ),
                                   validator: (value) =>
@@ -292,6 +374,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                           : null,
                                 ),
                               ),
+
+                              // Forgot password
                               Align(
                                 alignment: AlignmentDirectional.centerEnd,
                                 child: TextButton(
@@ -300,12 +384,15 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   child: Text(
                                     t.forgotPassword,
                                     style: const TextStyle(
-                                      color: Color(0xFFA5D6A7),
+                                      color: _wheatGold,
                                     ),
                                   ),
                                 ),
                               ),
+
                               const SizedBox(height: 8),
+
+                              // Login button
                               _stagger(
                                 start: 0.45,
                                 end: 0.9,
@@ -315,8 +402,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   child: ElevatedButton(
                                     onPressed: () => _submit(t),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF2E7D32),
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: _wheatGold,
+                                      foregroundColor: _deepGreen,
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(14),
@@ -326,13 +413,16 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                       t.login,
                                       style: const TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
+
                               const SizedBox(height: 14),
+
+                              // Register link
                               _stagger(
                                 start: 0.55,
                                 end: 1,
@@ -343,7 +433,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                     Text(
                                       t.dontHaveAccount,
                                       style: const TextStyle(
-                                        color: Colors.white70,
+                                        color: _softSage,
                                       ),
                                     ),
                                     TextButton(
@@ -359,7 +449,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                       child: Text(
                                         t.registerButton,
                                         style: const TextStyle(
-                                          color: Color(0xFFA5D6A7),
+                                          color: _wheatGold,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

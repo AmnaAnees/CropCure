@@ -23,26 +23,38 @@ class _RegisterPageState extends State<RegisterPage>
   bool _obscureConfirm = true;
   bool _loading = false;
 
-  // Slow zoom on the background (Ken Burns effect)
+  // Nature & Wheat Theme
+  static const Color _forestGreen = Color(0xFF174D35);
+  static const Color _softSage = Color(0xFFE5F0E5);
+  static const Color _warmCream = Color(0xFFF7F6ED);
+  static const Color _wheatGold = Color(0xFFD5AE55);
+  static const Color _deepGreen = Color(0xFF293B30);
+
+  // Background animation
   late final AnimationController _bgCtrl;
   late final Animation<double> _bgScale;
 
-  // Staggered entrance animation for the card contents
+  // Card entrance animation
   late final AnimationController _introCtrl;
-
-  static const _green = Color(0xFF2E7D32);
 
   @override
   void initState() {
     super.initState();
+
     _bgCtrl = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 18),
     )..repeat(reverse: true);
+
     _bgScale = Tween<double>(
       begin: 1.0,
       end: 1.15,
-    ).animate(CurvedAnimation(parent: _bgCtrl, curve: Curves.easeInOut));
+    ).animate(
+      CurvedAnimation(
+        parent: _bgCtrl,
+        curve: Curves.easeInOut,
+      ),
+    );
 
     _introCtrl = AnimationController(
       vsync: this,
@@ -61,8 +73,7 @@ class _RegisterPageState extends State<RegisterPage>
     super.dispose();
   }
 
-  /// Fade + slide-up animation for a section, active between [start] and [end]
-  /// of the intro timeline (values from 0.0 to 1.0).
+  // Fade and slide animation
   Widget _stagger({
     required double start,
     required double end,
@@ -70,8 +81,13 @@ class _RegisterPageState extends State<RegisterPage>
   }) {
     final animation = CurvedAnimation(
       parent: _introCtrl,
-      curve: Interval(start, end, curve: Curves.easeOutCubic),
+      curve: Interval(
+        start,
+        end,
+        curve: Curves.easeOutCubic,
+      ),
     );
+
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
@@ -84,8 +100,10 @@ class _RegisterPageState extends State<RegisterPage>
     );
   }
 
+  // Register button functionality
   Future<void> _submit() async {
     final t = AppLocalizations.of(context)!;
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _loading = true);
@@ -93,40 +111,59 @@ class _RegisterPageState extends State<RegisterPage>
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
+
     setState(() => _loading = false);
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(t.registerSuccess),
-        backgroundColor: _green,
+        backgroundColor: _forestGreen,
         behavior: SnackBarBehavior.floating,
       ),
     );
   }
 
+  // Text field decoration
   InputDecoration _decoration({
     required String label,
     required IconData icon,
     Widget? suffix,
   }) {
-    OutlineInputBorder border(Color c, [double w = 1]) => OutlineInputBorder(
-      borderRadius: BorderRadius.circular(14),
-      borderSide: BorderSide(color: c, width: w),
-    );
+    OutlineInputBorder border(Color color, [double width = 1]) {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: color,
+          width: width,
+        ),
+      );
+    }
 
     return InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(color: Colors.white70),
-      floatingLabelStyle: const TextStyle(color: Colors.white),
-      prefixIcon: Icon(icon, color: Colors.white70),
+      labelStyle: const TextStyle(
+        color: Colors.white70,
+      ),
+      floatingLabelStyle: const TextStyle(
+        color: _wheatGold,
+      ),
+      prefixIcon: Icon(
+        icon,
+        color: _softSage,
+      ),
       suffixIcon: suffix,
       filled: true,
       fillColor: Colors.white.withValues(alpha: 0.12),
-      errorStyle: const TextStyle(color: Color(0xFFFFCDD2)),
+      errorStyle: const TextStyle(
+        color: Color(0xFFFFCDD2),
+      ),
       enabledBorder: border(Colors.white30),
-      focusedBorder: border(Colors.white, 1.6),
+      focusedBorder: border(_wheatGold, 1.6),
       errorBorder: border(const Color(0xFFFFCDD2)),
-      focusedErrorBorder: border(const Color(0xFFFFCDD2), 1.6),
+      focusedErrorBorder: border(
+        const Color(0xFFFFCDD2),
+        1.6,
+      ),
     );
   }
 
@@ -138,7 +175,7 @@ class _RegisterPageState extends State<RegisterPage>
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // ---------- Animated background ----------
+          // Animated background
           AnimatedBuilder(
             animation: _bgScale,
             builder: (_, _) => Transform.scale(
@@ -150,46 +187,57 @@ class _RegisterPageState extends State<RegisterPage>
             ),
           ),
 
-          // Dark gradient so the text stays readable
+          // Forest green overlay
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withValues(alpha: 0.25),
-                  Colors.black.withValues(alpha: 0.65),
+                  _forestGreen.withValues(alpha: 0.38),
+                  _deepGreen.withValues(alpha: 0.82),
                 ],
               ),
             ),
           ),
 
-          // ---------- Content ----------
+          // Main content
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(20),
                 child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 420),
+                  constraints: const BoxConstraints(
+                    maxWidth: 420,
+                  ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(28),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                      filter: ImageFilter.blur(
+                        sigmaX: 14,
+                        sigmaY: 14,
+                      ),
                       child: Container(
-                        padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+                        padding: const EdgeInsets.fromLTRB(
+                          24,
+                          28,
+                          24,
+                          24,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.14),
+                          color: _forestGreen.withValues(alpha: 0.48),
                           borderRadius: BorderRadius.circular(28),
-                          border: Border.all(color: Colors.white30),
+                          border: Border.all(
+                            color: _wheatGold.withValues(alpha: 0.55),
+                            width: 1.2,
+                          ),
                         ),
                         child: Form(
                           key: _formKey,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // Logo (elastic pop-in)
-                              // Logo (elastic pop-in)
-
+                              // Logo animation
                               ScaleTransition(
                                 scale: CurvedAnimation(
                                   parent: _introCtrl,
@@ -204,8 +252,12 @@ class _RegisterPageState extends State<RegisterPage>
                                   height: 120,
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: _warmCream,
                                     borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: _wheatGold,
+                                      width: 2,
+                                    ),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withValues(
@@ -228,6 +280,7 @@ class _RegisterPageState extends State<RegisterPage>
 
                               const SizedBox(height: 16),
 
+                              // Title and subtitle
                               _stagger(
                                 start: 0.15,
                                 end: 0.5,
@@ -237,7 +290,7 @@ class _RegisterPageState extends State<RegisterPage>
                                       t.registerTitle,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        color: Colors.white,
+                                        color: _warmCream,
                                         fontSize: 26,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -247,13 +300,14 @@ class _RegisterPageState extends State<RegisterPage>
                                       t.registerSubtitle,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        color: Colors.white70,
+                                        color: _softSage,
                                         fontSize: 14,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+
                               const SizedBox(height: 24),
 
                               // Full name
@@ -262,7 +316,9 @@ class _RegisterPageState extends State<RegisterPage>
                                 end: 0.6,
                                 child: TextFormField(
                                   controller: _nameCtrl,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   textInputAction: TextInputAction.next,
                                   decoration: _decoration(
                                     label: t.fullName,
@@ -270,10 +326,11 @@ class _RegisterPageState extends State<RegisterPage>
                                   ),
                                   validator: (v) =>
                                       (v == null || v.trim().isEmpty)
-                                      ? t.errRequired
-                                      : null,
+                                          ? t.errRequired
+                                          : null,
                                 ),
                               ),
+
                               const SizedBox(height: 14),
 
                               // Email
@@ -282,7 +339,9 @@ class _RegisterPageState extends State<RegisterPage>
                                 end: 0.7,
                                 child: TextFormField(
                                   controller: _emailCtrl,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.next,
                                   decoration: _decoration(
@@ -293,13 +352,16 @@ class _RegisterPageState extends State<RegisterPage>
                                     if (v == null || v.trim().isEmpty) {
                                       return t.errRequired;
                                     }
+
                                     final ok = RegExp(
                                       r'^[^@\s]+@[^@\s]+\.[^@\s]+$',
                                     ).hasMatch(v.trim());
+
                                     return ok ? null : t.errInvalidEmail;
                                   },
                                 ),
                               ),
+
                               const SizedBox(height: 14),
 
                               // Password
@@ -309,7 +371,9 @@ class _RegisterPageState extends State<RegisterPage>
                                 child: TextFormField(
                                   controller: _passCtrl,
                                   obscureText: _obscurePass,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   textInputAction: TextInputAction.next,
                                   decoration: _decoration(
                                     label: t.password,
@@ -319,23 +383,27 @@ class _RegisterPageState extends State<RegisterPage>
                                         _obscurePass
                                             ? Icons.visibility_off_outlined
                                             : Icons.visibility_outlined,
-                                        color: Colors.white70,
+                                        color: _wheatGold,
                                       ),
-                                      onPressed: () => setState(
-                                        () => _obscurePass = !_obscurePass,
-                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _obscurePass = !_obscurePass;
+                                        });
+                                      },
                                     ),
                                   ),
                                   validator: (v) {
                                     if (v == null || v.isEmpty) {
                                       return t.errRequired;
                                     }
+
                                     return v.length < 6
                                         ? t.errPasswordShort
                                         : null;
                                   },
                                 ),
                               ),
+
                               const SizedBox(height: 14),
 
                               // Confirm password
@@ -345,7 +413,9 @@ class _RegisterPageState extends State<RegisterPage>
                                 child: TextFormField(
                                   controller: _confirmCtrl,
                                   obscureText: _obscureConfirm,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   textInputAction: TextInputAction.done,
                                   onFieldSubmitted: (_) => _submit(),
                                   decoration: _decoration(
@@ -356,24 +426,28 @@ class _RegisterPageState extends State<RegisterPage>
                                         _obscureConfirm
                                             ? Icons.visibility_off_outlined
                                             : Icons.visibility_outlined,
-                                        color: Colors.white70,
+                                        color: _wheatGold,
                                       ),
-                                      onPressed: () => setState(
-                                        () =>
-                                            _obscureConfirm = !_obscureConfirm,
-                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _obscureConfirm =
+                                              !_obscureConfirm;
+                                        });
+                                      },
                                     ),
                                   ),
                                   validator: (v) {
                                     if (v == null || v.isEmpty) {
                                       return t.errRequired;
                                     }
+
                                     return v != _passCtrl.text
                                         ? t.errPasswordMismatch
                                         : null;
                                   },
                                 ),
                               ),
+
                               const SizedBox(height: 24),
 
                               // Register button
@@ -386,9 +460,9 @@ class _RegisterPageState extends State<RegisterPage>
                                   child: ElevatedButton(
                                     onPressed: _loading ? null : _submit,
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: _green,
-                                      foregroundColor: Colors.white,
-                                      disabledBackgroundColor: _green
+                                      backgroundColor: _wheatGold,
+                                      foregroundColor: _deepGreen,
+                                      disabledBackgroundColor: _wheatGold
                                           .withValues(alpha: 0.7),
                                       elevation: 6,
                                       shape: RoundedRectangleBorder(
@@ -406,7 +480,7 @@ class _RegisterPageState extends State<RegisterPage>
                                               width: 22,
                                               child: CircularProgressIndicator(
                                                 strokeWidth: 2.5,
-                                                color: Colors.white,
+                                                color: _deepGreen,
                                               ),
                                             )
                                           : Text(
@@ -414,13 +488,14 @@ class _RegisterPageState extends State<RegisterPage>
                                               key: const ValueKey('label'),
                                               style: const TextStyle(
                                                 fontSize: 16,
-                                                fontWeight: FontWeight.w600,
+                                                fontWeight: FontWeight.w700,
                                               ),
                                             ),
                                     ),
                                   ),
                                 ),
                               ),
+
                               const SizedBox(height: 14),
 
                               // Login link
@@ -434,7 +509,7 @@ class _RegisterPageState extends State<RegisterPage>
                                     Text(
                                       t.alreadyHaveAccount,
                                       style: const TextStyle(
-                                        color: Colors.white70,
+                                        color: _softSage,
                                       ),
                                     ),
                                     TextButton(
@@ -447,10 +522,10 @@ class _RegisterPageState extends State<RegisterPage>
                                           ),
                                         );
                                       },
-                                      child: Text(
-                                        t.login,
-                                        style: const TextStyle(
-                                          color: Color(0xFFA5D6A7),
+                                      child: const Text(
+                                        'Login',
+                                        style: TextStyle(
+                                          color: _wheatGold,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
